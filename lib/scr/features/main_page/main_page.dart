@@ -5,14 +5,22 @@ import 'package:weather_app_dart/scr/core/styles/colors/colors.dart';
 import 'package:weather_app_dart/scr/core/styles/text_styles/text_styles.dart';
 import 'package:weather_app_dart/scr/core/widgets/app_bar_icon_button.dart';
 import 'package:weather_app_dart/scr/core/widgets/main_padding.dart';
+import 'package:weather_app_dart/scr/features/data_source/get_current_weather.dart';
 
-const conditionalWeather = '9º ☁️';
+const conditionalWeather = 'º ☁️';
+var temperature = 0.0;
+var weatherText = '';
 const descriptionWather = 'You will need 🧣 and 🧤 in';
 const city = 'London!';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,10 +57,15 @@ class MainPage extends StatelessWidget {
             children: [
               const Spacer(),
               Text(
-                conditionalWeather,
+                '$temperature $conditionalWeather',
                 style: AppTextStyles.title,
               ),
               const Spacer(),
+              Text(
+                "$weatherText",
+                style: AppTextStyles.subTitle,
+                textAlign: TextAlign.right,
+              ),
               Text(
                 descriptionWather,
                 style: AppTextStyles.subTitle,
@@ -62,9 +75,20 @@ class MainPage extends StatelessWidget {
                 city,
                 style: AppTextStyles.subTitle,
                 textAlign: TextAlign.right,
-              )
+              ),
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Text('+'),
+          onPressed: () async {
+            print('start');
+            final weatherData = await fetchWeatherData();
+            setState(() {
+              temperature = weatherData.temperature;
+              weatherText = weatherData.weatherText;
+            });
+          },
         ),
       ),
     );
