@@ -38,7 +38,6 @@ class MainPage extends StatelessWidget {
               icon: AppIcons.locationCity,
               onPressed: () {
                 //todo add list city
-                print('onpress ');
               },
             ),
           ],
