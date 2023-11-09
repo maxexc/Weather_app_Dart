@@ -1,10 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 import 'package:weather_app_dart/scr/core/assets/app_images.dart';
-import 'package:weather_app_dart/scr/core/data_source/data_cities_entity.dart';
+import 'package:weather_app_dart/scr/core/data/models/data_cities_model.dart';
+
 import 'package:weather_app_dart/scr/core/styles/colors/colors.dart';
 import 'package:weather_app_dart/scr/core/styles/text_styles/text_styles.dart';
 
@@ -16,7 +16,7 @@ class CitySearchPage extends StatefulWidget {
 }
 
 var inputCity = '';
-var listData = <DataCitiesEntity>[]; 
+var listData = <DataCitiesModel>[];
 
 class _CitySearchPageState extends State<CitySearchPage> {
   @override
@@ -35,7 +35,7 @@ class _CitySearchPageState extends State<CitySearchPage> {
               backgroundColor: AppColors.transparent,
               title: TextField(
                 onChanged: (newInput) async {
-                  inputCity = newInput;                  
+                  inputCity = newInput;
                   if (inputCity.length > 2) {
                     //new request
                     final url = Uri.http('dataservice.accuweather.com',
@@ -44,18 +44,17 @@ class _CitySearchPageState extends State<CitySearchPage> {
                       'q': inputCity
                     });
                     try {
-                      var response = await http.get(url);                  
-                        if (response.statusCode == 200) {
+                      var response = await http.get(url);
+                      if (response.statusCode == 200) {
                         final List jsonArray =
                             convert.jsonDecode(response.body);
                         listData.clear();
                         for (var element in jsonArray) {
-                          listData.add(DataCitiesEntity.fromJson(element));
-                        }                        
-                       
+                          listData.add(DataCitiesModel.fromJson(element));
+                        }
                       }
-                    } catch (error) {                     
-                        // todo add exception error                      
+                    } catch (error) {
+                      // todo add exception error
                     }
                     setState(() {});
                   }
