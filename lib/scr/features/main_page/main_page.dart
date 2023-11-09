@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_app_dart/scr/core/assets/app_icons.dart';
 import 'package:weather_app_dart/scr/core/assets/app_images.dart';
@@ -5,14 +6,24 @@ import 'package:weather_app_dart/scr/core/styles/colors/colors.dart';
 import 'package:weather_app_dart/scr/core/styles/text_styles/text_styles.dart';
 import 'package:weather_app_dart/scr/core/widgets/app_bar_icon_button.dart';
 import 'package:weather_app_dart/scr/core/widgets/main_padding.dart';
+import 'package:weather_app_dart/scr/features/city_search_page/city_search_page.dart';
+import 'package:weather_app_dart/scr/core/data_source/get_current_weather.dart';
 
-const conditionalWeather = '9º ☁️';
+const conditionalWeather = 'º ';
+var temperature = 0.0;
+var weatherText = '';
+var weatherIconNumber = 1;
 const descriptionWather = 'You will need 🧣 and 🧤 in';
 const city = 'London!';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,6 +49,11 @@ class MainPage extends StatelessWidget {
               icon: AppIcons.locationCity,
               onPressed: () {
                 //todo add list city
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CitySearchPage()),
+                );
               },
             ),
           ],
@@ -48,23 +64,44 @@ class MainPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Spacer(),
-              Text(
-                conditionalWeather,
-                style: AppTextStyles.title,
+              Row(
+                children: [
+                  Text(
+                    '$temperature $conditionalWeather',
+                    style: AppTextStyles().title,
+                  ),
+                  Image.asset('assets/icons/$weatherIconNumber-s.png')
+                ],
               ),
               const Spacer(),
               Text(
+                weatherText,
+                style: AppTextStyles().subTitle,
+                textAlign: TextAlign.right,
+              ),
+              Text(
                 descriptionWather,
-                style: AppTextStyles.subTitle,
+                style: AppTextStyles().subTitle,
                 textAlign: TextAlign.right,
               ),
               Text(
                 city,
-                style: AppTextStyles.subTitle,
+                style: AppTextStyles().subTitle,
                 textAlign: TextAlign.right,
-              )
+              ),
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: const Text('+'),
+          onPressed: () async {            
+            final weatherData = await fetchWeatherData();
+            setState(() {
+              temperature = weatherData.temperature;
+              weatherText = weatherData.weatherText;
+              weatherIconNumber = weatherData.weatherIcon;
+            });
+          },
         ),
       ),
     );
