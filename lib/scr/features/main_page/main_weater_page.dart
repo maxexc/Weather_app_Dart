@@ -16,14 +16,14 @@ var weatherIconNumber = 1;
 const descriptionWather = 'You will need 🧣 and 🧤 in';
 const city = 'London!';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class MainWeatherPage extends StatefulWidget {
+  const MainWeatherPage({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<MainWeatherPage> createState() => _MainWeatherPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainWeatherPageState extends State<MainWeatherPage> {
   @override
   Widget build(BuildContext context) {
     return Container(

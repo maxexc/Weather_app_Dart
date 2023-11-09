@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app_dart/scr/features/main_page/main_page.dart';
+import 'package:weather_app_dart/scr/core/di/main_weather_injection_container.dart'
+    as main_weather_injection;
+import 'package:weather_app_dart/scr/features/main_page/main_weater_page.dart';
 
 void main() {
+  main_weather_injection.init();
   runApp(const Main());
 }
 
@@ -10,8 +13,6 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MainPage(),
-    );
+    return const MaterialApp(home: MainWeatherPage());
   }
 }
