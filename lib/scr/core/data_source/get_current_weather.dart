@@ -4,7 +4,7 @@ import 'dart:convert' as convert;
 
 import 'package:weather_app_dart/scr/core/data_source/date_weather.dart';
 
-const String api = 'rYV6RIu503f0dI4vSwuX8QfoygoNZrYq';
+const String api = 'LWFUAhBA7AAmO9xIv0WCUOB9s6jmWr6f';
 var currentLocation = '167783';
 
 Future<DataWeatherEntity> fetchWeatherData() async {
@@ -16,15 +16,9 @@ Future<DataWeatherEntity> fetchWeatherData() async {
   var response = await http.get(url);
   if (response.statusCode == 200) {
     var json = convert.jsonDecode(response.body)[0];
-    final dataWeather = DataWeatherEntity.fromJson(json);
-    if (kDebugMode) {
-      print(json);
-    }
+    final dataWeather = DataWeatherEntity.fromJson(json);  
     return dataWeather;
   } else {
-    if (kDebugMode) {
-      print('Request failed with status: ${response.statusCode}.');
-    }
     throw 'status code = ${response.statusCode}';
   }
 }

@@ -94,10 +94,7 @@ class _MainPageState extends State<MainPage> {
         ),
         floatingActionButton: FloatingActionButton(
           child: const Text('+'),
-          onPressed: () async {
-            if (kDebugMode) {
-              print('start');
-            }
+          onPressed: () async {            
             final weatherData = await fetchWeatherData();
             setState(() {
               temperature = weatherData.temperature;

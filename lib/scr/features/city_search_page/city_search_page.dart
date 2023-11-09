@@ -16,7 +16,7 @@ class CitySearchPage extends StatefulWidget {
 }
 
 var inputCity = '';
-var listData = <DataCitiesEntity>[]; //ирндесб название города
+var listData = <DataCitiesEntity>[]; 
 
 class _CitySearchPageState extends State<CitySearchPage> {
   @override
@@ -35,44 +35,27 @@ class _CitySearchPageState extends State<CitySearchPage> {
               backgroundColor: AppColors.transparent,
               title: TextField(
                 onChanged: (newInput) async {
-                  inputCity = newInput;
-                  if (kDebugMode) {
-                    print(inputCity);
-                  }
+                  inputCity = newInput;                  
                   if (inputCity.length > 2) {
                     //new request
                     final url = Uri.http('dataservice.accuweather.com',
                         'locations/v1/cities/autocomplete', {
-                      'apikey': 'rYV6RIu503f0dI4vSwuX8QfoygoNZrYq',
+                      'apikey': 'LWFUAhBA7AAmO9xIv0WCUOB9s6jmWr6f',
                       'q': inputCity
                     });
                     try {
-                      var response = await http.get(url);
-                      if (kDebugMode) {
-                        print('get data');
-                      }
-                      if (kDebugMode) {
-                        print(response.statusCode);
-                      }
-                      if (response.statusCode == 200) {
+                      var response = await http.get(url);                  
+                        if (response.statusCode == 200) {
                         final List jsonArray =
                             convert.jsonDecode(response.body);
                         listData.clear();
                         for (var element in jsonArray) {
-                          print(element);
                           listData.add(DataCitiesEntity.fromJson(element));
-                        }
-                        if (kDebugMode) {
-                          print(jsonArray);
-                        }
-                        if (kDebugMode) {
-                          print(listData);
-                        }
+                        }                        
+                       
                       }
-                    } catch (error) {
-                      if (kDebugMode) {
-                        print(error);
-                      }
+                    } catch (error) {                     
+                        // todo add exception error                      
                     }
                     setState(() {});
                   }
@@ -106,8 +89,3 @@ class _CitySearchPageState extends State<CitySearchPage> {
     );
   }
 }
-
-
-//http://dataservice.accuweather.com/locations/v1/cities/autocomplete?
-// apikey=rYV6RIu503f0dI4vSwuX8QfoygoNZrYq&
-// q=Lon
