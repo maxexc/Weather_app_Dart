@@ -29,21 +29,20 @@ var currentLocation = '167783';
 //   }
 // }
 
-class WeatherDataSource extends BaseDataSource<DataWeatherModel> {
-  WeatherDataSource({
-    required super.quaryParams,
-    required super.path, required super.basePath,
-  });
-
-
-}
+// class WeatherDataSource<DataWeatherModel> extends BaseDataSource{
+//   WeatherDataSource({
+//     required super.quaryParams,
+//     required super.path, required super.basePath,
+//   });
+//
+//
+// }
 
 // Future<DataWeatherModel> fetchWeatherData() async {
 //   var url = Uri.http(
 //       'dataservice.accuweather.com', 'currentonditions/v1/$currentLocation', {
 //     'apikey': api,
 //   });
-c
 //   var response = await http.get(url);
 //   if (response.statusCode == 200) {
 //     var json = convert.jsonDecode(response.body)[0];

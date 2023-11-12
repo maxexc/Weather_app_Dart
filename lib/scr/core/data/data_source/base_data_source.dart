@@ -1,12 +1,9 @@
 import 'package:http/http.dart' as http;
-import 'package:weather_app_dart/scr/core/data/data_source/base_data_source.dart';
 import 'package:weather_app_dart/scr/core/data/models/base_model.dart';
 import 'package:weather_app_dart/scr/core/data/models/data_cities_model.dart';
 import 'dart:convert' as convert;
 
-import 'package:weather_app_dart/scr/core/data/models/data_weather_model.dart';
-
-class BaseDataSource<T extends BaseModel> {
+abstract class BaseDataSource<T extends BaseModel> {
   final Map<String, String> quaryParams;
   final String basePath;
   final String path;
@@ -18,18 +15,29 @@ class BaseDataSource<T extends BaseModel> {
   });
 
   @override
-  Future<Type> fetchData() async {
-    final Uri uri = Uri.http(basePath, path, quaryParams);
-    final response = await http.get(uri);
-    if (response.statusCode == 200) {
-      var json = convert.jsonDecode(response.body)[0];
-      T.fromJson(json);
-      final data = BaseModel.fromJson(json);
+  Future<T> fetchData();
+}
 
-      //final data = B.fromJson(json);
-      return T;
-    }
+class CitySearcDataSource extends BaseDataSource<CityDataModel> {
+  CitySearcDataSource(
+      {required super.quaryParams,
+      required super.basePath,
+      required super.path});
 
-    throw 'status code = ${response.statusCode}';
+  @override
+  Future<CityDataModel> fetchData() {
+    // TODO: implement fetchData
+    throw UnimplementedError();
   }
 }
+// final Uri uri = Uri.http(basePath, path, quaryParams);
+//     final response = await http.get(uri);
+//     if (response.statusCode == 200) {
+//       var json = convert.jsonDecode(response.body)[0];
+//       var d = DataCitiesModel.fromJson(json);
+//
+//       final data = (T is BaseModel).fromJson(json);
+//       final data = BaseModel.fromJson(json);
+//
+//       //final data = B.fromJson(json);
+//       return T;

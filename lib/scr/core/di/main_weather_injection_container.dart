@@ -7,10 +7,10 @@ import 'package:weather_app_dart/scr/core/data/data_source/get_current_weather.d
 final slMainWeather = GetIt.instance;
 
 Future<void> init() async {
-  slMainWeather
-      .registerLazySingleton<WeatherDataSource>(() => WeatherDataSource(
-            quaryParams: {QueryParams.apiKey.value: apiKey},
-            path: ApiPath.getWeatherPath(''),
-            basePath: baseUrl,
-          ));
+  // slMainWeather
+  //     .registerLazySingleton<WeatherDataSource>(() => WeatherDataSource(
+  //           quaryParams: {QueryParams.apiKey.value: apiKey},
+  //           path: ApiPath.getWeatherPath(''),
+  //           basePath: baseUrl,
+  //         ));
 }

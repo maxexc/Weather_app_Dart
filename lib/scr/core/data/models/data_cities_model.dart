@@ -1,10 +1,10 @@
 import 'package:weather_app_dart/scr/core/data/models/base_model.dart';
 
-class DataCitiesModel extends BaseModel {
+class CityDataModel extends BaseModel {
   final String cityName;
   final String key;
 
-  DataCitiesModel.fromJson(super.json)
+  CityDataModel.fromJson(super.json)
       : cityName = json['LocalizedName'],
         key = json['Key'],
         super.fromJson();

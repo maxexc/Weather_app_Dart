@@ -16,7 +16,7 @@ class CitySearchPage extends StatefulWidget {
 }
 
 var inputCity = '';
-var listData = <DataCitiesModel>[];
+var listData = <CityDataModel>[];
 
 class _CitySearchPageState extends State<CitySearchPage> {
   @override
@@ -50,7 +50,7 @@ class _CitySearchPageState extends State<CitySearchPage> {
                             convert.jsonDecode(response.body);
                         listData.clear();
                         for (var element in jsonArray) {
-                          listData.add(DataCitiesModel.fromJson(element));
+                          listData.add(CityDataModel.fromJson(element));
                         }
                       }
                     } catch (error) {
