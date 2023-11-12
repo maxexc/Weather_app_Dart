@@ -6,7 +6,6 @@ import 'package:weather_app_dart/scr/core/styles/text_styles/text_styles.dart';
 import 'package:weather_app_dart/scr/core/widgets/app_bar_icon_button.dart';
 import 'package:weather_app_dart/scr/core/widgets/main_padding.dart';
 import 'package:weather_app_dart/scr/features/city_search_page/city_search_page.dart';
-import 'package:weather_app_dart/scr/core/data/data_source/get_current_weather.dart';
 
 const conditionalWeather = 'º ';
 var temperature = 0.0;
@@ -94,12 +93,12 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
         floatingActionButton: FloatingActionButton(
           child: const Text('+'),
           onPressed: () async {
-            final weatherData = await fetchWeatherData();
-            setState(() {
-              temperature = weatherData.temperature;
-              weatherText = weatherData.weatherText;
-              weatherIconNumber = weatherData.weatherIcon;
-            });
+            // final weatherData = await fetchWeatherData();
+            // setState(() {
+            //   temperature = weatherData.temperature;
+            //   weatherText = weatherData.weatherText;
+            //   weatherIconNumber = weatherData.weatherIcon;
+            // });
           },
         ),
       ),

@@ -1,12 +1,3 @@
-import 'package:http/http.dart' as http;
-import 'package:weather_app_dart/scr/core/data/data_source/base_data_source.dart';
-import 'package:weather_app_dart/scr/core/data/models/data_cities_model.dart';
-import 'dart:convert' as convert;
-
-import 'package:weather_app_dart/scr/core/data/models/data_weather_model.dart';
-import 'package:weather_app_dart/scr/core/data/models/location_model.dart';
-import 'package:weather_app_dart/scr/features/city_search_page/city_search_page.dart';
-
 const String api = 'LWFUAhBA7AAmO9xIv0WCUOB9s6jmWr6f';
 var currentLocation = '167783';
 

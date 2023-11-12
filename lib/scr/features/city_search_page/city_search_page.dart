@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
 
 import 'package:weather_app_dart/scr/core/assets/app_images.dart';
+import 'package:weather_app_dart/scr/core/data/data_source/base_data_source.dart';
 import 'package:weather_app_dart/scr/core/data/models/data_cities_model.dart';
+import 'package:weather_app_dart/scr/core/di/cities_injection_container.dart';
 
 import 'package:weather_app_dart/scr/core/styles/colors/colors.dart';
 import 'package:weather_app_dart/scr/core/styles/text_styles/text_styles.dart';
+import 'package:weather_app_dart/scr/core/utils/logger.dart';
 
 class CitySearchPage extends StatefulWidget {
   const CitySearchPage({super.key});
@@ -16,7 +17,7 @@ class CitySearchPage extends StatefulWidget {
 }
 
 var inputCity = '';
-var listData = <CityDataModel>[];
+var listData = <DataCityModel>[];
 
 class _CitySearchPageState extends State<CitySearchPage> {
   @override
@@ -37,25 +38,33 @@ class _CitySearchPageState extends State<CitySearchPage> {
                 onChanged: (newInput) async {
                   inputCity = newInput;
                   if (inputCity.length > 2) {
+                    final citySearcDataSource = slCities<CitySearcDataSource>();
+                    listData = (await citySearcDataSource
+                            .fetchData(additionalQueryParams: {'q': inputCity}))
+                        .listCitiesDataModel;
+                    listData.forEach(
+                      (element) => logDebug(element.cityName),
+                    );
+
                     //new request
-                    final url = Uri.http('dataservice.accuweather.com',
-                        'locations/v1/cities/autocomplete', {
-                      'apikey': 'LWFUAhBA7AAmO9xIv0WCUOB9s6jmWr6f',
-                      'q': inputCity
-                    });
-                    try {
-                      var response = await http.get(url);
-                      if (response.statusCode == 200) {
-                        final List jsonArray =
-                            convert.jsonDecode(response.body);
-                        listData.clear();
-                        for (var element in jsonArray) {
-                          listData.add(CityDataModel.fromJson(element));
-                        }
-                      }
-                    } catch (error) {
-                      // todo add exception error
-                    }
+                    // final url = Uri.http('dataservice.accuweather.com',
+                    //     'locations/v1/cities/autocomplete', {
+                    //   'apikey': 'LWFUAhBA7AAmO9xIv0WCUOB9s6jmWr6f',
+                    //   'q': inputCity
+                    // });
+                    // try {
+                    //   var response = await http.get(url);
+                    //   if (response.statusCode == 200) {
+                    //     final List jsonArray =
+                    //         convert.jsonDecode(response.body);
+                    //     listData.clear();
+                    //     for (var element in jsonArray) {
+                    //       listData.add(DataCityModel.fromJson(element));
+                    //     }
+                    //   }
+                    // } catch (error) {
+                    //   // todo add exception error
+                    // }
                     setState(() {});
                   }
                 },
