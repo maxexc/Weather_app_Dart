@@ -20,16 +20,8 @@ abstract class BaseDataSource<T extends BaseModel> {
     String? additionalPath,
     Map<String, String> additionalQueryParams,
   });
-}
 
-class CitySearcDataSource extends BaseDataSource<ListCitiesDataModel> {
-  CitySearcDataSource(
-      {required super.queryParams,
-      required super.basePath,
-      required super.path});
-
-  @override
-  Future<ListCitiesDataModel> fetchData({
+  Future<dynamic> request({
     String? additionalPath,
     Map<String, String>? additionalQueryParams,
   }) async {
@@ -45,21 +37,8 @@ class CitySearcDataSource extends BaseDataSource<ListCitiesDataModel> {
     final responce = await http.get(uri);
 
     if (responce.statusCode == 200) {
-      var json = convert.jsonDecode(responce.body);
-      logDebug(json.toString());
-      return ListCitiesDataModel.fromJson(json);
+      return convert.jsonDecode(responce.body);
     }
     throw UnimplementedError(responce.statusCode.toString());
   }
 }
-// final Uri uri = Uri.http(basePath, path, quaryParams);
-//     final response = await http.get(uri);
-//     if (response.statusCode == 200) {
-//       var json = convert.jsonDecode(response.body)[0];
-//       var d = DataCitiesModel.fromJson(json);
-//
-//       final data = (T is BaseModel).fromJson(json);
-//       final data = BaseModel.fromJson(json);
-//
-//       //final data = B.fromJson(json);
-//       return T;
