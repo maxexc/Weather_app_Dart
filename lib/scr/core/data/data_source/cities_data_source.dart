@@ -1,9 +1,5 @@
 import 'package:weather_app_dart/scr/core/data/data_source/base_data_source.dart';
 import 'package:weather_app_dart/scr/core/data/models/list_cities_data_model.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
-
-import 'package:weather_app_dart/scr/core/utils/logger.dart';
 
 class CitySearcDataSource extends BaseDataSource<ListCitiesDataModel> {
   CitySearcDataSource(

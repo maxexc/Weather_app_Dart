@@ -1,9 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:weather_app_dart/scr/core/data/models/base_model.dart';
-import 'package:weather_app_dart/scr/core/data/models/list_cities_data_model.dart';
 import 'dart:convert' as convert;
-
-import 'package:weather_app_dart/scr/core/utils/logger.dart';
 
 abstract class BaseDataSource<T extends BaseModel> {
   final Map<String, String> queryParams;

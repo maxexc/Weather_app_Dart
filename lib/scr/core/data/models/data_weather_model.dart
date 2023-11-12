@@ -5,9 +5,9 @@ class DataWeatherModel extends BaseModel {
   final double temperature;
   final int weatherIcon;
   DataWeatherModel.fromJson(super.json)
-      : weatherText = json['WeatherText'],
-        temperature = json['Temperature']['Metric']['Value'],
-        weatherIcon = json['WeatherIcon'],
+      : weatherText = json[0]['WeatherText'],
+        temperature = json[0]['Temperature']['Metric']['Value'],
+        weatherIcon = json[0]['WeatherIcon'],
         super.fromJson();
 
   @override
