@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import 'package:weather_app_dart/scr/core/assets/app_images.dart';
 import 'package:weather_app_dart/scr/core/data/data_source/cities_data_source.dart';
@@ -7,6 +8,7 @@ import 'package:weather_app_dart/scr/core/di/cities_injection_container.dart';
 
 import 'package:weather_app_dart/scr/core/styles/colors/colors.dart';
 import 'package:weather_app_dart/scr/core/styles/text_styles/text_styles.dart';
+import 'package:weather_app_dart/scr/core/utils/logger.dart';
 
 class CitySearchPage extends StatefulWidget {
   const CitySearchPage({super.key});
@@ -37,11 +39,13 @@ class _CitySearchPageState extends State<CitySearchPage> {
                 onChanged: (newInput) async {
                   inputCity = newInput;
                   if (inputCity.length > 2) {
-                    final citySearcDataSource = slCities<CitySearcDataSource>();
+                    final citySearcDataSource =
+                        slCities<CitySearchDataSource>();
                     listData = (await citySearcDataSource
                             .fetchData(additionalQueryParams: {'q': inputCity}))
                         .listCitiesDataModel;
                     setState(() {});
+                    logDebug(listData.toString());
                   }
                 },
                 style: AppTextStyles().body,
