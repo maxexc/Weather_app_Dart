@@ -1,13 +1,14 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_app_dart/scr/core/assets/app_icons.dart';
 import 'package:weather_app_dart/scr/core/assets/app_images.dart';
+import 'package:weather_app_dart/scr/core/data/data_source/weather_data_source.dart';
+import 'package:weather_app_dart/scr/core/di/main_weather_injection_container.dart';
 import 'package:weather_app_dart/scr/core/styles/colors/colors.dart';
 import 'package:weather_app_dart/scr/core/styles/text_styles/text_styles.dart';
+import 'package:weather_app_dart/scr/core/utils/logger.dart';
 import 'package:weather_app_dart/scr/core/widgets/app_bar_icon_button.dart';
 import 'package:weather_app_dart/scr/core/widgets/main_padding.dart';
 import 'package:weather_app_dart/scr/features/city_search_page/city_search_page.dart';
-import 'package:weather_app_dart/scr/core/data_source/get_current_weather.dart';
 
 const conditionalWeather = 'º ';
 var temperature = 0.0;
@@ -94,8 +95,12 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
         ),
         floatingActionButton: FloatingActionButton(
           child: const Text('+'),
-          onPressed: () async {            
-            final weatherData = await fetchWeatherData();
+          onPressed: () async {
+            final weatherDataSource = slMainWeather<WeatherSearcDataSource>();
+            final weatherData = await weatherDataSource.fetchData(
+              additionalPath: '167783',
+            );
+            logDebug(weatherData.toString());
             setState(() {
               temperature = weatherData.temperature;
               weatherText = weatherData.weatherText;

@@ -1,12 +1,13 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
 
 import 'package:weather_app_dart/scr/core/assets/app_images.dart';
-import 'package:weather_app_dart/scr/core/data_source/data_cities_entity.dart';
+import 'package:weather_app_dart/scr/core/data/data_source/cities_data_source.dart';
+import 'package:weather_app_dart/scr/core/data/models/data_cities_model.dart';
+import 'package:weather_app_dart/scr/core/di/cities_injection_container.dart';
+
 import 'package:weather_app_dart/scr/core/styles/colors/colors.dart';
 import 'package:weather_app_dart/scr/core/styles/text_styles/text_styles.dart';
+import 'package:weather_app_dart/scr/core/utils/logger.dart';
 
 class CitySearchPage extends StatefulWidget {
   const CitySearchPage({super.key});
@@ -16,7 +17,7 @@ class CitySearchPage extends StatefulWidget {
 }
 
 var inputCity = '';
-var listData = <DataCitiesEntity>[]; 
+var listData = <DataCityModel>[];
 
 class _CitySearchPageState extends State<CitySearchPage> {
   @override
@@ -35,29 +36,15 @@ class _CitySearchPageState extends State<CitySearchPage> {
               backgroundColor: AppColors.transparent,
               title: TextField(
                 onChanged: (newInput) async {
-                  inputCity = newInput;                  
+                  inputCity = newInput;
                   if (inputCity.length > 2) {
-                    //new request
-                    final url = Uri.http('dataservice.accuweather.com',
-                        'locations/v1/cities/autocomplete', {
-                      'apikey': 'LWFUAhBA7AAmO9xIv0WCUOB9s6jmWr6f',
-                      'q': inputCity
-                    });
-                    try {
-                      var response = await http.get(url);                  
-                        if (response.statusCode == 200) {
-                        final List jsonArray =
-                            convert.jsonDecode(response.body);
-                        listData.clear();
-                        for (var element in jsonArray) {
-                          listData.add(DataCitiesEntity.fromJson(element));
-                        }                        
-                       
-                      }
-                    } catch (error) {                     
-                        // todo add exception error                      
-                    }
+                    final citySearcDataSource =
+                        slCities<CitySearchDataSource>();
+                    listData = (await citySearcDataSource
+                            .fetchData(additionalQueryParams: {'q': inputCity}))
+                        .listCitiesDataModel;
                     setState(() {});
+                    logDebug(listData);
                   }
                 },
                 style: AppTextStyles().body,
