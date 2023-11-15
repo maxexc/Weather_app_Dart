@@ -12,10 +12,4 @@ Future<void> init() async {
         basePath: slExternal<Api>().basePath,
         path: slExternal<Api>().getPathIndexCity(),
       ));
-  // slMainWeather
-  //     .registerLazySingleton<WeatherDataSource>(() => WeatherDataSource(
-  //           quaryParams: {QueryParams.apiKey.value: apiKey},
-  //           path: ApiPath.getWeatherPath(''),
-  //           basePath: baseUrl,
-  //         ));
 }

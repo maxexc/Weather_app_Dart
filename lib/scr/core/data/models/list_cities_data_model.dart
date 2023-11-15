@@ -9,13 +9,6 @@ class ListCitiesDataModel extends BaseModel {
             (json as List).length,
             (index) => DataCityModel.fromJson((json)[index])),
         super.fromJson(json);
-  //       {
-  //   final lenght = (json as List).length;
-  //   final List<DataCityModel> list = [];
-  //   for (int i = 0; i < lenght; i++) {
-  //     list.add(DataCityModel.fromJson((json as List)[i]));
-  //   }
-  // }
 
   @override
   List<Object?> get props => [ListCitiesDataModel];

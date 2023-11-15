@@ -45,7 +45,7 @@ class _CitySearchPageState extends State<CitySearchPage> {
                             .fetchData(additionalQueryParams: {'q': inputCity}))
                         .listCitiesDataModel;
                     setState(() {});
-                    logDebug(listData.toString());
+                    logDebug(listData);
                   }
                 },
                 style: AppTextStyles().body,

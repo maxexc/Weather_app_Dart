@@ -1,5 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:logger/logger.dart';
+import 'package:weather_app_dart/scr/core/utils/logger.dart';
 
 abstract class BaseModel extends Equatable {
-  const BaseModel.fromJson(dynamic json);
+  BaseModel.fromJson(dynamic json) {
+    logDebug(json);
+  }
 }

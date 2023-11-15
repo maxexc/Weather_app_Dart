@@ -12,10 +12,10 @@ class CitySearchDataSource extends BaseDataSource<ListCitiesDataModel> {
     String? additionalPath,
     Map<String, String>? additionalQueryParams,
   }) async {
-    return ListCitiesDataModel.fromJson(
-      await request(
-          additionalPath: additionalPath,
-          additionalQueryParams: additionalQueryParams),
-    );
+    final json = await request(
+        additionalPath: additionalPath,
+        additionalQueryParams: additionalQueryParams);
+
+    return ListCitiesDataModel.fromJson(json);
   }
 }
