@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:weather_app_dart/scr/core/data/models/base_model.dart';
 
 class DataCityModel extends BaseModel {
