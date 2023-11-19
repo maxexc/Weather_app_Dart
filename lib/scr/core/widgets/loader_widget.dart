@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_app_dart/scr/core/styles/colors/colors.dart';
 

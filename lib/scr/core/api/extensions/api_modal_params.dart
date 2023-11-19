@@ -5,4 +5,8 @@ enum QueryParams {
   final String value;
 
   const QueryParams(this.value);
+
+  Map<String, String> setParams(String params) {
+    return {value: params};
+  }
 }

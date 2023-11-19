@@ -9,6 +9,7 @@ import 'package:weather_app_dart/scr/core/styles/colors/colors.dart';
 import 'package:weather_app_dart/scr/core/styles/paddings.dart';
 import 'package:weather_app_dart/scr/core/styles/text_styles/text_styles.dart';
 import 'package:weather_app_dart/scr/core/utils/logger.dart';
+import 'package:weather_app_dart/scr/core/widgets/background_widget.dart';
 import 'package:weather_app_dart/scr/core/widgets/loader_widget.dart';
 
 class CitySearchPage extends StatefulWidget {
@@ -51,14 +52,14 @@ class _CitySearchPageState extends State<CitySearchPage> {
   }
 
   Widget _buildCityButton(DataCityModel dataCityModel) {
-    return GestureDetector(
+    return ListTile(
       onTap: () {
         logDebug(
             'country =${dataCityModel.country}, city= ${dataCityModel.cityName}, location code = ${dataCityModel.key}');
         Navigator.pop(context, dataCityModel);
       },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: AppPadding.border),
+      title: Container(
+        padding: const EdgeInsets.symmetric(horizontal: AppPadding.border),
         color: AppColors.transparent,
         child: Text(
           dataCityModel.cityName,
@@ -68,14 +69,10 @@ class _CitySearchPageState extends State<CitySearchPage> {
     );
   }
 
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: ExactAssetImage(AppImages.cityBackground),
-          fit: BoxFit.cover,
-        ),
-      ),
+    return BackgroundWidget(
+      assetBackGroundImage: AppImages.cityBackground,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: AppColors.transparent,
