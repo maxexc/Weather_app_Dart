@@ -14,8 +14,9 @@ class WeatherSearcDataSource extends BaseDataSource<DataWeatherModel> {
   }) async {
     return DataWeatherModel.fromJson(
       await request(
-          additionalPath: additionalPath,
-          additionalQueryParams: additionalQueryParams),
+        additionalPath: additionalPath,
+        additionalQueryParams: additionalQueryParams,
+      ),
     );
   }
 }

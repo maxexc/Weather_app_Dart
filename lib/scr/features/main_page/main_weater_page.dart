@@ -7,8 +7,9 @@ import 'package:weather_app_dart/scr/core/styles/colors/colors.dart';
 import 'package:weather_app_dart/scr/core/styles/text_styles/text_styles.dart';
 import 'package:weather_app_dart/scr/core/utils/logger.dart';
 import 'package:weather_app_dart/scr/core/widgets/app_bar_icon_button.dart';
+import 'package:weather_app_dart/scr/core/widgets/background_widget.dart';
 import 'package:weather_app_dart/scr/core/widgets/main_padding.dart';
-import 'package:weather_app_dart/scr/features/city_search_page/city_search_page.dart';
+import 'package:weather_app_dart/scr/features/city_search_page/presentation/city_search_page.dart';
 
 const conditionalWeather = 'º ';
 var temperature = 0.0;
@@ -27,13 +28,8 @@ class MainWeatherPage extends StatefulWidget {
 class _MainWeatherPageState extends State<MainWeatherPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: ExactAssetImage(AppImages.locationBackground),
-          fit: BoxFit.cover,
-        ),
-      ),
+    return BackgroundWidget(
+      assetBackGroundImage: AppImages.locationBackground,
       child: Scaffold(
         backgroundColor: AppColors.transparent,
         appBar: AppBar(
