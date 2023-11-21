@@ -1,6 +1,6 @@
 # weather_app_dart
 
-Weather forecast app based on real-time API Acu Weather
+Weather forecast app based on real-time API Accu Weather
 
 A new Flutter project.
 
