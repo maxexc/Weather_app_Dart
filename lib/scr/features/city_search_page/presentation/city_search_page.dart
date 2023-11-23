@@ -40,6 +40,7 @@ class _CitySearchPageState extends State<CitySearchPage> {
     if (_inputCity.length > 2) {
       _isLoaded = false;
       final getListCitiesInteractor = slCities<GetListCitiesInteractor>();
+
       _listData = await getListCitiesInteractor(_inputCity);
       logDebug(_listData);
     } else {

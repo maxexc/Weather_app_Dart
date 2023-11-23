@@ -5,7 +5,7 @@ import 'package:weather_app_dart/scr/core/di/external_injection_container.dart'
     as external_enjection;
 import 'package:weather_app_dart/scr/core/di/cities_injection_container.dart'
     as cities_injection_container;
-import 'package:weather_app_dart/scr/features/main_page/main_weater_page.dart';
+import 'package:weather_app_dart/scr/features/main_page/presentation/main_weater_page.dart';
 
 void main() async {
   await main_weather_injection.init();

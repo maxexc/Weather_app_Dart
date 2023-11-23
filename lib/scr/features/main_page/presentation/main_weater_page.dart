@@ -9,6 +9,7 @@ import 'package:weather_app_dart/scr/core/utils/logger.dart';
 import 'package:weather_app_dart/scr/core/widgets/app_bar_icon_button.dart';
 import 'package:weather_app_dart/scr/core/widgets/background_widget.dart';
 import 'package:weather_app_dart/scr/core/widgets/main_padding.dart';
+import 'package:weather_app_dart/scr/features/city_search_page/domain/entities/city_entity.dart';
 import 'package:weather_app_dart/scr/features/city_search_page/presentation/city_search_page.dart';
 
 const conditionalWeather = 'º ';
@@ -16,7 +17,7 @@ var temperature = 0.0;
 var weatherText = '';
 var weatherIconNumber = 1;
 const descriptionWather = 'You will need 🧣 and 🧤 in';
-const city = 'London!';
+// const city = 'London!';
 
 class MainWeatherPage extends StatefulWidget {
   const MainWeatherPage({super.key});
@@ -26,6 +27,7 @@ class MainWeatherPage extends StatefulWidget {
 }
 
 class _MainWeatherPageState extends State<MainWeatherPage> {
+  CityEntity? city;
   @override
   Widget build(BuildContext context) {
     return BackgroundWidget(
@@ -44,13 +46,14 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
           actions: [
             AppBarIconButton(
               icon: AppIcons.locationCity,
-              onPressed: () {
-                //todo add list city
-                Navigator.push(
+              onPressed: () async {
+                city = await Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => const CitySearchPage()),
                 );
+                setState(() {});
+                logDebug(city);
               },
             ),
           ],
@@ -82,7 +85,8 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
                 textAlign: TextAlign.right,
               ),
               Text(
-                city,
+                city?.cityName ??
+                    'city undefine', // if city == null, then 'city undefine'
                 style: AppTextStyles().subTitle,
                 textAlign: TextAlign.right,
               ),
