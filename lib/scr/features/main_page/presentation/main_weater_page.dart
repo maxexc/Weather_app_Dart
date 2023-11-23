@@ -87,7 +87,6 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
               Text(
                 city?.cityName ??
                     'city undefine', // if city == null, then 'city undefine'
-
                 style: AppTextStyles().subTitle,
                 textAlign: TextAlign.right,
               ),
@@ -97,16 +96,16 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
         floatingActionButton: FloatingActionButton(
           child: const Text('+'),
           onPressed: () async {
-            // final weatherDataSource = slMainWeather<WeatherSearcDataSource>();
-            // final weatherData = await weatherDataSource.fetchData(
-            //   additionalPath: '167783',
-            // );
-            // logDebug(weatherData.toString());
-            // setState(() {
-            //   temperature = weatherData.temperature;
-            //   weatherText = weatherData.weatherText;
-            //   weatherIconNumber = weatherData.weatherIcon;
-            // });
+            final weatherDataSource = slMainWeather<WeatherSearcDataSource>();
+            final weatherData = await weatherDataSource.fetchData(
+              additionalPath: '167783',
+            );
+            logDebug(weatherData.toString());
+            setState(() {
+              temperature = weatherData.temperature;
+              weatherText = weatherData.weatherText;
+              weatherIconNumber = weatherData.weatherIcon;
+            });
           },
         ),
       ),

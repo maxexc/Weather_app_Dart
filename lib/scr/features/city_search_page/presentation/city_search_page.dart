@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:weather_app_dart/scr/core/assets/app_images.dart';
+import 'package:weather_app_dart/scr/core/data/data_source/cities_data_source.dart';
 import 'package:weather_app_dart/scr/core/di/cities_injection_container.dart';
+
 import 'package:weather_app_dart/scr/core/styles/colors/colors.dart';
 import 'package:weather_app_dart/scr/core/styles/paddings.dart';
 import 'package:weather_app_dart/scr/core/styles/text_styles/text_styles.dart';
@@ -37,6 +40,7 @@ class _CitySearchPageState extends State<CitySearchPage> {
     if (_inputCity.length > 2) {
       _isLoaded = false;
       final getListCitiesInteractor = slCities<GetListCitiesInteractor>();
+
       _listData = await getListCitiesInteractor(_inputCity);
       logDebug(_listData);
     } else {

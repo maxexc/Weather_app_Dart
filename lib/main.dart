@@ -8,7 +8,7 @@ import 'package:weather_app_dart/scr/core/di/cities_injection_container.dart'
 import 'package:weather_app_dart/scr/features/main_page/presentation/main_weater_page.dart';
 
 void main() async {
-  // await main_weather_injection.init();
+  await main_weather_injection.init();
   await external_enjection.init();
   await cities_injection_container.init();
   runApp(const Main());
