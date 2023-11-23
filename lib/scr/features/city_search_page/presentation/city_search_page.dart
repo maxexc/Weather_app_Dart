@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:weather_app_dart/scr/core/assets/app_images.dart';
 import 'package:weather_app_dart/scr/core/data/data_source/cities_data_source.dart';
-import 'package:weather_app_dart/scr/core/data/models/data_cities_model.dart';
 import 'package:weather_app_dart/scr/core/di/cities_injection_container.dart';
 
 import 'package:weather_app_dart/scr/core/styles/colors/colors.dart';
@@ -11,6 +10,8 @@ import 'package:weather_app_dart/scr/core/styles/text_styles/text_styles.dart';
 import 'package:weather_app_dart/scr/core/utils/logger.dart';
 import 'package:weather_app_dart/scr/core/widgets/background_widget.dart';
 import 'package:weather_app_dart/scr/core/widgets/loader_widget.dart';
+import 'package:weather_app_dart/scr/features/city_search_page/domain/entities/city_entity.dart';
+import 'package:weather_app_dart/scr/features/city_search_page/domain/interactors/get_list_cities_interactor.dart';
 
 class CitySearchPage extends StatefulWidget {
   const CitySearchPage({super.key});
@@ -21,14 +22,14 @@ class CitySearchPage extends StatefulWidget {
 
 class _CitySearchPageState extends State<CitySearchPage> {
   var _inputCity = '';
-  var _listData = <DataCityModel>[];
+  var _listData = <CityEntity>[];
   static const _hintText = 'Enter the city';
   var _isLoaded = true;
 
   @override
   void initState() {
     _inputCity = '';
-    _listData = <DataCityModel>[];
+    _listData = <CityEntity>[];
     super.initState();
   }
 
@@ -38,11 +39,8 @@ class _CitySearchPageState extends State<CitySearchPage> {
     setState(() {});
     if (_inputCity.length > 2) {
       _isLoaded = false;
-      final citySearcDataSource = slCities<CitySearchDataSource>();
-      _listData = (await citySearcDataSource
-              .fetchData(additionalQueryParams: {'q': _inputCity}))
-          .listCitiesDataModel;
-
+      final getListCitiesInteractor = slCities<GetListCitiesInteractor>();
+      _listData = await getListCitiesInteractor(_inputCity);
       logDebug(_listData);
     } else {
       _listData = [];
@@ -51,18 +49,18 @@ class _CitySearchPageState extends State<CitySearchPage> {
     setState(() {});
   }
 
-  Widget _buildCityButton(DataCityModel dataCityModel) {
+  Widget _buildCityButton(CityEntity cityEntity) {
     return ListTile(
       onTap: () {
         logDebug(
-            'country =${dataCityModel.country}, city= ${dataCityModel.cityName}, location code = ${dataCityModel.key}');
-        Navigator.pop(context, dataCityModel);
+            'country =${cityEntity.country}, city= ${cityEntity.cityName}, location code = ${cityEntity.key}');
+        Navigator.pop(context, cityEntity);
       },
       title: Container(
         padding: const EdgeInsets.symmetric(horizontal: AppPadding.border),
         color: AppColors.transparent,
         child: Text(
-          dataCityModel.cityName,
+          cityEntity.cityName,
           style: AppTextStyles().body,
         ),
       ),
