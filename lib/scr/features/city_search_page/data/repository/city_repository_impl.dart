@@ -1,6 +1,6 @@
 import 'package:weather_app_dart/scr/core/api/extensions/api_modal_params.dart';
 import 'package:weather_app_dart/scr/core/data/data_source/cities_data_source.dart';
-import 'package:weather_app_dart/scr/features/city_search_page/domain/cities_repository.dart';
+import 'package:weather_app_dart/scr/features/city_search_page/domain/repository/cities_repository.dart';
 import 'package:weather_app_dart/scr/features/city_search_page/domain/entities/city_entity.dart';
 
 class CityRepositoryImpl extends CityRepository<CitySearchDataSource> {
