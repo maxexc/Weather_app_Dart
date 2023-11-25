@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:weather_app_dart/scr/core/api/api.dart';
 import 'package:weather_app_dart/scr/core/api/extensions/api_modal_params.dart';
 import 'package:weather_app_dart/scr/core/api/extensions/api_model_path.dart';
+import 'package:weather_app_dart/scr/core/data/data_source/geolocator_data_source.dart';
 import 'package:weather_app_dart/scr/core/data/data_source/weather_data_source.dart';
 import 'package:weather_app_dart/scr/core/di/external_injection_container.dart';
 import 'package:weather_app_dart/scr/features/main_page/data/weather_repository_impl.dart';
@@ -24,4 +25,6 @@ Future<void> init() async {
   slMainWeather.registerLazySingleton<GetWeatherByIndexZoneInteractor>(
     () => GetWeatherByIndexZoneInteractor(slMainWeather<WeatherRepository>()),
   );
+  slMainWeather.registerLazySingleton<GeolocatorDataSource>(
+      () => GeolocatorDataSource());
 }

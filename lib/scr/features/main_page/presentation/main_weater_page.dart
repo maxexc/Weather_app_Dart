@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:weather_app_dart/scr/core/assets/app_icons.dart';
 import 'package:weather_app_dart/scr/core/assets/app_images.dart';
+import 'package:weather_app_dart/scr/core/data/data_source/geolocator_data_source.dart';
 import 'package:weather_app_dart/scr/core/data/data_source/weather_data_source.dart';
 import 'package:weather_app_dart/scr/core/di/main_weather_injection_container.dart';
 import 'package:weather_app_dart/scr/core/styles/colors/colors.dart';
@@ -39,22 +41,25 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
           backgroundColor: AppColors.transparent,
           leading: AppBarIconButton(
             icon: AppIcons.nearMe,
-            onPressed: () {
+            onPressed: () async {
               //todo add geolocation
+              final geolocatorDataSource =
+                  slMainWeather<GeolocatorDataSource>();
+              final isAvailable = await geolocatorDataSource.isAvailable();
+              logDebug(isAvailable);
+              final permission = await geolocatorDataSource.requestPermission();
+              if (permission == true) {
+                final coord =
+                    await geolocatorDataSource.getCurrentPositionCoordinate();
+                logDebug(
+                    'ccord: longitude ${coord.longitude}, latitude ${coord.latitude} ');
+              }
             },
           ),
           actions: [
             AppBarIconButton(
               icon: AppIcons.locationCity,
-              onPressed: () async {
-                city = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const CitySearchPage()),
-                );
-                setState(() {});
-                logDebug(city);
-              },
+              onPressed: _getWeatherByLocalCode,
             ),
           ],
         ),
@@ -93,22 +98,31 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          child: const Text('+'),
-          onPressed: () async {
-            final weatherDataSource = slMainWeather<WeatherSearcDataSource>();
-            final weatherData = await weatherDataSource.fetchData(
-              additionalPath: '167783',
-            );
-            logDebug(weatherData.toString());
-            setState(() {
-              temperature = weatherData.temperature;
-              weatherText = weatherData.weatherText;
-              weatherIconNumber = weatherData.weatherIcon;
-            });
-          },
-        ),
       ),
     );
+  }
+
+  void _getWeatherByLocalCode() async {
+    city = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CitySearchPage()),
+    );
+    setState(() {});
+    logDebug(city);
+
+    try {
+      final weatherDataSource = slMainWeather<WeatherSearcDataSource>();
+      final weatherData = await weatherDataSource.fetchData(
+        additionalPath: city!.key,
+      );
+      logDebug(weatherData.toString());
+      setState(() {
+        temperature = weatherData.temperature;
+        weatherText = weatherData.weatherText;
+        weatherIconNumber = weatherData.weatherIcon;
+      });
+    } catch (e) {
+      logDebug(e);
+    }
   }
 }
