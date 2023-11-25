@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:weather_app_dart/scr/core/assets/app_icons.dart';
 import 'package:weather_app_dart/scr/core/assets/app_images.dart';
 import 'package:weather_app_dart/scr/core/data/data_source/geolocator_data_source.dart';
