@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:weather_app_dart/scr/core/assets/app_icons.dart';
 import 'package:weather_app_dart/scr/core/assets/app_images.dart';
 import 'package:weather_app_dart/scr/core/data/data_source/geolocator_data_source.dart';
@@ -12,6 +14,8 @@ import 'package:weather_app_dart/scr/core/widgets/background_widget.dart';
 import 'package:weather_app_dart/scr/core/widgets/main_padding.dart';
 import 'package:weather_app_dart/scr/features/city_search_page/domain/entities/city_entity.dart';
 import 'package:weather_app_dart/scr/features/city_search_page/presentation/city_search_page.dart';
+import 'package:weather_app_dart/scr/features/main_page/domain/interactors/get_index_zone_interactor.dart';
+import 'package:weather_app_dart/translations/generate/l10n.dart';
 
 const conditionalWeather = 'º ';
 var temperature = 0.0;
@@ -29,6 +33,8 @@ class MainWeatherPage extends StatefulWidget {
 
 class _MainWeatherPageState extends State<MainWeatherPage> {
   CityEntity? city;
+
+  // CityEntity city = CityEntity(cityName: '', key: '', country: '');
   @override
   Widget build(BuildContext context) {
     return BackgroundWidget(
@@ -52,6 +58,13 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
                     await geolocatorDataSource.getCurrentPositionCoordinate();
                 logDebug(
                     'ccord: longitude ${coord.longitude}, latitude ${coord.latitude} ');
+                final indexDataZone =
+                    await slMainWeather<GetIndexZoneInteractor>().call(coord);
+                if (kDebugMode) {
+                  print('Key alilua ${indexDataZone.key}');
+                }
+                await _getWeatherByKey(indexDataZone.key);
+                setState(() {});
               }
             },
           ),
@@ -60,6 +73,24 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
               icon: AppIcons.locationCity,
               onPressed: _getWeatherByLocalCode,
             ),
+            Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: AppBarIconButton(
+                    onPressed: () {
+                      final currenLanguage = Intl.getCurrentLocale();
+                      final listLanguages = IntlLocate.delegate.supportedLocales
+                          .map((e) => e.languageCode)
+                          .toList();
+                      for (var i = 0; i < listLanguages.length; i++) {
+                        if (currenLanguage == listLanguages[i]) {
+                          IntlLocate.load(Locale(i == listLanguages.length - 1
+                              ? listLanguages[0]
+                              : listLanguages[i + 1]));
+                        }
+                      }
+                      setState(() {});
+                    },
+                    icon: Icons.language)),
           ],
         ),
         body: MainPadding(
@@ -84,13 +115,15 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
                 textAlign: TextAlign.right,
               ),
               Text(
-                descriptionWather,
+                IntlLocate.of(context).describeWeather,
                 style: AppTextStyles().subTitle,
                 textAlign: TextAlign.right,
               ),
               Text(
                 city?.cityName ??
                     'city undefine', // if city == null, then 'city undefine'
+
+                // city.cityName.isNotEmpty ? city.cityName : 'city undefine',
                 style: AppTextStyles().subTitle,
                 textAlign: TextAlign.right,
               ),
@@ -108,18 +141,22 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
     );
     setState(() {});
     logDebug(city);
+    await _getWeatherByKey(city?.key);
+    setState(() {});
+  }
 
+  Future<void> _getWeatherByKey(String? key) async {
     try {
       final weatherDataSource = slMainWeather<WeatherSearcDataSource>();
       final weatherData = await weatherDataSource.fetchData(
-        additionalPath: city!.key,
+        additionalPath: key,
       );
       logDebug(weatherData.toString());
-      setState(() {
-        temperature = weatherData.temperature;
-        weatherText = weatherData.weatherText;
-        weatherIconNumber = weatherData.weatherIcon;
-      });
+
+      temperature = weatherData.temperature;
+      weatherText = weatherData.weatherText;
+      weatherIconNumber = weatherData.weatherIcon;
+      // city = city.copyWith(cityName: weatherData.city);
     } catch (e) {
       logDebug(e);
     }

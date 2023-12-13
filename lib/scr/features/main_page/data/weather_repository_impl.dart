@@ -11,8 +11,10 @@ class WeatherRepositoryImpl extends WeatherRepository<WeatherSearcDataSource> {
     final weatherModel =
         await dataSource.fetchData(additionalPath: indexLocationZone);
     return WeatherEntity(
-        weatherText: weatherModel.weatherText,
-        temperature: weatherModel.temperature,
-        weatherIcon: weatherModel.weatherIcon);
+      weatherText: weatherModel.weatherText,
+      temperature: weatherModel.temperature,
+      weatherIcon: weatherModel.weatherIcon,
+      city: weatherModel.city,
+    );
   }
 }

@@ -14,5 +14,8 @@ class LocationModel extends BaseModel {
   }
 
   @override
+  String toString() => "${latitude.toString()},${longitude.toString()}";
+
+  @override
   List<Object?> get props => [longitude, latitude];
 }

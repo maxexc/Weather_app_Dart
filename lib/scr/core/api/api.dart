@@ -9,4 +9,8 @@ class Api {
   String getPathIndexCity() {
     return 'locations/v1/cities/autocomplete';
   }
+
+  String getPathLocalIndex() {
+    return 'locations/v1/cities/geoposition/search';
+  }
 }
