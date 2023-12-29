@@ -14,7 +14,6 @@ class WeatherRepositoryImpl extends WeatherRepository<WeatherSearcDataSource> {
       weatherText: weatherModel.weatherText,
       temperature: weatherModel.temperature,
       weatherIcon: weatherModel.weatherIcon,
-      city: weatherModel.city,
     );
   }
 }

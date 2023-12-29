@@ -19,6 +19,6 @@ class IndexLocationRepositoryImpl
       {required LocationModel locationModel}) async {
     final indexZoneData = await dataSource
         .fetchData(additionalQueryParams: {"q": locationModel.toString()});
-    return IndexZoneEntity(key: indexZoneData.key);
+    return IndexZoneEntity(key: indexZoneData.key, city: indexZoneData.city);
   }
 }
