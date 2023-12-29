@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
+
+import 'package:intl/intl.dart';
 import 'package:weather_app_dart/scr/core/assets/app_icons.dart';
 import 'package:weather_app_dart/scr/core/assets/app_images.dart';
 import 'package:weather_app_dart/scr/core/data/data_source/geolocator_data_source.dart';
-import 'package:weather_app_dart/scr/core/data/data_source/weather_data_source.dart';
 import 'package:weather_app_dart/scr/core/di/main_weather_injection_container.dart';
 import 'package:weather_app_dart/scr/core/styles/colors/colors.dart';
 import 'package:weather_app_dart/scr/core/styles/text_styles/text_styles.dart';
@@ -11,15 +11,19 @@ import 'package:weather_app_dart/scr/core/utils/logger.dart';
 import 'package:weather_app_dart/scr/core/widgets/app_bar_icon_button.dart';
 import 'package:weather_app_dart/scr/core/widgets/background_widget.dart';
 import 'package:weather_app_dart/scr/core/widgets/main_padding.dart';
-import 'package:weather_app_dart/scr/features/city_search_page/domain/entities/city_entity.dart';
 import 'package:weather_app_dart/scr/features/city_search_page/presentation/city_search_page.dart';
+import 'package:weather_app_dart/scr/features/main_page/domain/entities/weather_entity.dart';
+import 'package:weather_app_dart/scr/features/main_page/domain/interactors/get_weather_by_index_zone_interactor.dart';
+import 'package:weather_app_dart/scr/features/main_page/domain/interactors/get_weather_by_key_city.dart';
+import 'package:weather_app_dart/translations/generate/l10n.dart';
 
 const conditionalWeather = 'º ';
-var temperature = 0.0;
-var weatherText = '';
-var weatherIconNumber = 1;
-const descriptionWather = 'You will need 🧣 and 🧤 in';
-// const city = 'London!';
+const descriptionWather = '';
+var weatherEntity = WeatherEntity(
+  weatherText: descriptionWather,
+  temperature: 0,
+  weatherIcon: 1,
+);
 
 class MainWeatherPage extends StatefulWidget {
   const MainWeatherPage({super.key});
@@ -29,7 +33,6 @@ class MainWeatherPage extends StatefulWidget {
 }
 
 class _MainWeatherPageState extends State<MainWeatherPage> {
-  CityEntity? city;
   @override
   Widget build(BuildContext context) {
     return BackgroundWidget(
@@ -42,7 +45,6 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
           leading: AppBarIconButton(
             icon: AppIcons.nearMe,
             onPressed: () async {
-              //todo add geolocation
               final geolocatorDataSource =
                   slMainWeather<GeolocatorDataSource>();
               final isAvailable = await geolocatorDataSource.isAvailable();
@@ -51,8 +53,10 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
               if (permission == true) {
                 final coord =
                     await geolocatorDataSource.getCurrentPositionCoordinate();
-                logDebug(
-                    'ccord: longitude ${coord.longitude}, latitude ${coord.latitude} ');
+                final getWeatherInteractor =
+                    slMainWeather<GetWeatherByIndexZoneInteractor>();
+                weatherEntity = await getWeatherInteractor.call(coord);
+                setState(() {});
               }
             },
           ),
@@ -61,6 +65,24 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
               icon: AppIcons.locationCity,
               onPressed: _getWeatherByLocalCode,
             ),
+            Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: AppBarIconButton(
+                    onPressed: () {
+                      final currenLanguage = Intl.getCurrentLocale();
+                      final listLanguages = IntlLocate.delegate.supportedLocales
+                          .map((e) => e.languageCode)
+                          .toList();
+                      for (var i = 0; i < listLanguages.length; i++) {
+                        if (currenLanguage == listLanguages[i]) {
+                          IntlLocate.load(Locale(i == listLanguages.length - 1
+                              ? listLanguages[0]
+                              : listLanguages[i + 1]));
+                        }
+                      }
+                      setState(() {});
+                    },
+                    icon: Icons.language)),
           ],
         ),
         body: MainPadding(
@@ -72,25 +94,25 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
               Row(
                 children: [
                   Text(
-                    '$temperature $conditionalWeather',
+                    '${weatherEntity.temperature} $conditionalWeather',
                     style: AppTextStyles().title,
                   ),
-                  Image.asset('assets/icons/$weatherIconNumber-s.png')
+                  Image.asset('assets/icons/${weatherEntity.weatherIcon}-s.png')
                 ],
               ),
               const Spacer(),
               Text(
-                weatherText,
+                weatherEntity.weatherText,
                 style: AppTextStyles().subTitle,
                 textAlign: TextAlign.right,
               ),
               Text(
-                descriptionWather,
+                IntlLocate.of(context).describeWeather,
                 style: AppTextStyles().subTitle,
                 textAlign: TextAlign.right,
               ),
               Text(
-                city?.cityName ??
+                weatherEntity.city ??
                     'city undefine', // if city == null, then 'city undefine'
                 style: AppTextStyles().subTitle,
                 textAlign: TextAlign.right,
@@ -103,26 +125,14 @@ class _MainWeatherPageState extends State<MainWeatherPage> {
   }
 
   void _getWeatherByLocalCode() async {
-    city = await Navigator.push(
+    final cityEntity = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const CitySearchPage()),
     );
     setState(() {});
-    logDebug(city);
+    final getWeatherByKeyCity = slMainWeather<GetWeatherByKeyCity>();
+    weatherEntity = await getWeatherByKeyCity.call(cityEntity);
 
-    try {
-      final weatherDataSource = slMainWeather<WeatherSearcDataSource>();
-      final weatherData = await weatherDataSource.fetchData(
-        additionalPath: city!.key,
-      );
-      logDebug(weatherData.toString());
-      setState(() {
-        temperature = weatherData.temperature;
-        weatherText = weatherData.weatherText;
-        weatherIconNumber = weatherData.weatherIcon;
-      });
-    } catch (e) {
-      logDebug(e);
-    }
+    setState(() {});
   }
 }

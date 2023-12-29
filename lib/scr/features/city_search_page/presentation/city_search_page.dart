@@ -9,6 +9,7 @@ import 'package:weather_app_dart/scr/core/widgets/background_widget.dart';
 import 'package:weather_app_dart/scr/core/widgets/loader_widget.dart';
 import 'package:weather_app_dart/scr/features/city_search_page/domain/entities/city_entity.dart';
 import 'package:weather_app_dart/scr/features/city_search_page/domain/interactors/get_list_cities_interactor.dart';
+import 'package:weather_app_dart/translations/generate/l10n.dart';
 
 class CitySearchPage extends StatefulWidget {
   const CitySearchPage({super.key});
@@ -20,7 +21,6 @@ class CitySearchPage extends StatefulWidget {
 class _CitySearchPageState extends State<CitySearchPage> {
   var _inputCity = '';
   var _listData = <CityEntity>[];
-  static const _hintText = 'Enter the city';
   var _isLoaded = true;
 
   @override
@@ -78,7 +78,8 @@ class _CitySearchPageState extends State<CitySearchPage> {
                 onChanged: _onChachedTextField,
                 style: AppTextStyles().body,
                 decoration: InputDecoration(
-                    hintText: _hintText, hintStyle: AppTextStyles().hintText),
+                    hintText: IntlLocate.of(context).enterTheCity,
+                    hintStyle: AppTextStyles().hintText),
               ),
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
@@ -95,6 +96,22 @@ class _CitySearchPageState extends State<CitySearchPage> {
   ListView _buildBody() {
     return ListView(
       children: [
+        Row(
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  IntlLocate.load(const Locale('en'));
+                  setState(() {});
+                },
+                child: const Text('en')),
+            ElevatedButton(
+                onPressed: () {
+                  IntlLocate.load(const Locale('ru'));
+                  setState(() {});
+                },
+                child: const Text('ru')),
+          ],
+        ),
         ..._listData
             .map(
               (e) => _buildCityButton(e),

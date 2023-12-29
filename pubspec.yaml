@@ -19,6 +19,17 @@ dependencies:
   logger: ^2.0.2+1
   equatable: ^2.0.5
   geolocator: ^10.1.0
+  intl_utils: ^2.8.6
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.18.1
+
+flutter_intl:
+  enable: true
+  class_name: IntlLocate
+  main_local: en
+  arb_dir: lib/translations
+  output_dir: lib/translations/generate
 
 dev_dependencies:
   flutter_test:
@@ -27,6 +38,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
+  generate: true
   uses-material-design: true
   assets:
     - assets/images/

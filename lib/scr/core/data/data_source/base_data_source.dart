@@ -15,7 +15,7 @@ abstract class BaseDataSource<T extends BaseModel> {
 
   Future<T> fetchData({
     String? additionalPath,
-    Map<String, String> additionalQueryParams,
+    required Map<String, String> additionalQueryParams,
   });
 
   Future<dynamic> request({

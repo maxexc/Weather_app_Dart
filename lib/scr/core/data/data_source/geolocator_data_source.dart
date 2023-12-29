@@ -11,7 +11,6 @@ class GeolocatorDataSource {
 
   Future<bool> requestPermission() async {
     final permission = await Geolocator.checkPermission();
-    // logDebug('permission, ${permission}');
     if (permission == LocationPermission.denied) {
       final req = await Geolocator.requestPermission();
       if (req == LocationPermission.unableToDetermine ||
@@ -19,7 +18,6 @@ class GeolocatorDataSource {
         return true;
       }
       return false;
-      // return Future.error('Location permissions are denied');
     } else if (permission == LocationPermission.deniedForever) {
       throw LocationPermission.deniedForever;
     }
