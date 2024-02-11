@@ -1,4 +1,5 @@
 const String apiKey = 'LWFUAhBA7AAmO9xIv0WCUOB9s6jmWr6f';
+// const String apiKey = 'rYV6RIu503f0dI4vSwuX8QfoygoNZrYq';
 
 class Api {
   String get basePath => 'dataservice.accuweather.com';
@@ -8,5 +9,9 @@ class Api {
 
   String getPathIndexCity() {
     return 'locations/v1/cities/autocomplete';
+  }
+
+  String getPathLocalIndex() {
+    return 'locations/v1/cities/geoposition/search';
   }
 }

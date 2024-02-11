@@ -11,6 +11,11 @@ class CityEntity extends BaseEntity {
     required this.country,
   });
 
+  // CityEntity copyWith({String? cityName, String? key, String? country}) =>
+  //     CityEntity(
+  //         cityName: cityName ?? this.cityName,
+  //         key: key ?? this.key,
+  //         country: country ?? this.country);
   @override
   List<Object?> get props => [cityName, key, country];
 }

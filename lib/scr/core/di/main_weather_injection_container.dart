@@ -7,6 +7,8 @@ import 'package:weather_app_dart/scr/core/data/data_source/weather_data_source.d
 import 'package:weather_app_dart/scr/core/di/external_injection_container.dart';
 import 'package:weather_app_dart/scr/features/main_page/data/weather_repository_impl.dart';
 import 'package:weather_app_dart/scr/features/main_page/domain/interactors/get_weather_by_index_zone_interactor.dart';
+import 'package:weather_app_dart/scr/features/main_page/domain/interactors/get_weather_by_key_city.dart';
+import 'package:weather_app_dart/scr/features/main_page/domain/repository/index_location_repository.dart';
 import 'package:weather_app_dart/scr/features/main_page/domain/repository/weather_repository.dart';
 
 final slMainWeather = GetIt.instance;
@@ -23,8 +25,11 @@ Future<void> init() async {
     () => WeatherRepositoryImpl(slMainWeather<WeatherSearcDataSource>()),
   );
   slMainWeather.registerLazySingleton<GetWeatherByIndexZoneInteractor>(
-    () => GetWeatherByIndexZoneInteractor(slMainWeather<WeatherRepository>()),
+    () => GetWeatherByIndexZoneInteractor(slMainWeather<WeatherRepository>(),
+        slMainWeather<IndexLocationRepository>()),
   );
   slMainWeather.registerLazySingleton<GeolocatorDataSource>(
       () => GeolocatorDataSource());
+  slMainWeather.registerLazySingleton(() => GetWeatherByKeyCity(
+      weatherRepository: slMainWeather<WeatherRepository>()));
 }
